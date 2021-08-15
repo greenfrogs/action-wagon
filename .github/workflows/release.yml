@@ -12,20 +12,18 @@ jobs:
       fail-fast: false
       matrix:
         container:
-        - 'debian:latest'
-        - 'ubuntu:latest'
-        - 'centos:latest'
+        - 'python:latest'
+        - 'fnndsc/ubuntu-python3:ubuntu20.04-python3.8.10'
+        - 'centos/python-38-centos7:latest'
     runs-on: ubuntu-latest
     container: ${{ matrix.container }}
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-      - name: Install Python
-        run: (apt-get update && apt-get install -y python3) || (yum update && dnf install -y python3)
       - name: Install
-        run: python3 -m pip install wagon
+        run: python -m pip install wagon
       - name: Wagonify
-        run: python3 -m wagon create . -r requirements.txt
+        run: python -m wagon create . -r requirements.txt
       - name: Find wagon
         run: echo "WAGON=$(find *.wgn -printf "%f\n")" >> $GITHUB_ENV
       - name: Release
