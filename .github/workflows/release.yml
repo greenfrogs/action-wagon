@@ -23,6 +23,8 @@ jobs:
         run: python3 -m pip install wagon
       - name: Wagonify
         run: python3 -m wagon create . -r requirements.txt
+      - name: Find wagon
+        run: echo "WAGON=$(find *.wgn -printf "%f\n")" >> $GITHUB_ENV
       - name: Release
         uses: softprops/action-gh-release@v1
-        with: "*.wgn"
+        with: ${{ env.WAGON }}
